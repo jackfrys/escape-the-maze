@@ -1,23 +1,13 @@
-#Copyright Notice:
-#The files within this zip file are copyrighted by Lazy Foo' Productions (2004-2014)
-#and may not be redistributed without written permission.
+all: maze
+	
+maze: main.o Maze.o
+	g++ -std=c++11 -Wall -lSDL2 -o $@ $^
 
-#OBJS specifies which files to compile as part of the project
-OBJS = 01_hello_SDL.cpp
+main.o: main.cpp Maze.h
+	g++ -c -std=c++11 -Wall -lSDL2 -O2 -o $@ $<
 
-#CC specifies which compiler we're using
-CC = g++
+Maze.o: Maze.cpp Maze.h
+	g++ -c -std=c++11 -Wall -lSDL2 -O2 -o $@ $<
 
-#COMPILER_FLAGS specifies the additional compilation options we're using
-# -w suppresses all warnings
-COMPILER_FLAGS = -w
-
-#LINKER_FLAGS specifies the libraries we're linking against
-LINKER_FLAGS = -lSDL2
-
-#OBJ_NAME specifies the name of our exectuable
-OBJ_NAME = 01_hello_SDL
-
-#This is the target that compiles our executable
-all : $(OBJS)
-	$(CC) $(OBJS) $(COMPILER_FLAGS) $(LINKER_FLAGS) -o $(OBJ_NAME)
+clean:
+	rm -f maze main.o Maze.o
