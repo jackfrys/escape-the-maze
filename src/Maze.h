@@ -1,5 +1,5 @@
-#ifndef GAME_H
-#define GAME_H
+#ifndef MAZE_H
+#define MAZE_H
 
 #include "SDL2/SDL.h"
 #include <iostream>
@@ -10,7 +10,7 @@ public:
   Maze();
   ~Maze();
 
-  void init(int width, int height);
+  void init();
   
   // TODO have this actually do something
   void handleInput();
@@ -23,9 +23,10 @@ public:
 
 private:
   bool isRunning;
+  int size;
+  char** cells;
   SDL_Window *maze;
   SDL_Renderer *renderer;
-
 };
 
 #endif
