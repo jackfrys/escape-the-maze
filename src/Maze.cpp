@@ -6,7 +6,6 @@ Maze::Maze() {
 }
 
 Maze::~Maze() {
-
 }
 
 void Maze::init(int width, int height) {
@@ -56,4 +55,8 @@ void Maze::clean() {
   SDL_DestroyWindow(maze);
   SDL_DestroyRenderer(renderer);
   SDL_Quit();
+}
+
+bool Maze::running() {
+  return isRunning;
 }

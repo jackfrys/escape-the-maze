@@ -1,5 +1,5 @@
 all: maze
-
+	
 maze: main.o Maze.o
 	g++ -std=c++11 -Wall -lSDL2 -o $@ $^
 
