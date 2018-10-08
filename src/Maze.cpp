@@ -1,4 +1,5 @@
 #include "Maze.h"
+#include "Cell.h"
 
 // Cell size constraint
 const int CELL_SIZE = 50;
@@ -9,9 +10,9 @@ Maze::Maze() {
   // Dynamically generate the 2D array
   // Eventually this constructor will take a difficulty and change the size
   size = 10;
-  cells = new char*[size];
+  cells = new Cell*[size];
   for(int i = 0; i < size; ++i) {
-    cells[i] = new char[size];
+    cells[i] = new Cell[size];
   }
 }
 
@@ -68,16 +69,11 @@ void Maze::render() {
   SDL_RenderClear(renderer);
   
   // Change color to white
-  SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );
+  SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
   
   for (int x = 0; x < size; x++) {
     for (int y = 0; y < size; y++) {
-      int xPos = x * CELL_SIZE;
-      int yPos = y * CELL_SIZE;
-      // Create rectangle
-      SDL_Rect cell = { xPos, yPos, CELL_SIZE, CELL_SIZE };
-      // Draw the rectangle
-      SDL_RenderDrawRect(renderer, &cell);
+      cells[x][y].renderCell(renderer, x, y);
     }
   }
 

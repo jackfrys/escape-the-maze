@@ -9,6 +9,7 @@ class Cell {
 public:
   Cell();
   ~Cell();
+  void renderCell(SDL_Renderer *renderer, int x, int y);
 
 private:
   bool up;

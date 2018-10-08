@@ -2,6 +2,7 @@
 #define MAZE_H
 
 #include "SDL2/SDL.h"
+#include "Cell.h"
 #include <iostream>
 
 class Maze {
@@ -24,7 +25,7 @@ public:
 private:
   bool isRunning;
   int size;
-  char** cells;
+  Cell** cells;
   SDL_Window *maze;
   SDL_Renderer *renderer;
 };
