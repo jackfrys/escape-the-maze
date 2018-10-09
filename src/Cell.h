@@ -5,17 +5,17 @@
 #include <iostream>
 
 class Cell {
-
 public:
   Cell();
   ~Cell();
   void renderCell(SDL_Renderer *renderer, int x, int y);
+  bool canMove(int direction);
 
 private:
-  bool up;
-  bool down;
-  bool left;
-  bool right;
+  int up;
+  int down;
+  int left;
+  int right;
 };
 
 #endif

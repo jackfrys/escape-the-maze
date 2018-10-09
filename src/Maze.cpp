@@ -2,7 +2,7 @@
 #include "Cell.h"
 
 // Cell size constraint
-const int CELL_SIZE = 50;
+const int CELL_SIZE = 25;
 
 using namespace std;
 
@@ -58,10 +58,18 @@ void Maze::handleInput() {
     case SDL_KEYDOWN:
       switch (event.key.keysym.sym)
       {
-          case SDLK_LEFT:  playerX--; break;
-          case SDLK_RIGHT: playerX++; break;
-          case SDLK_UP:    playerY--; break;
-          case SDLK_DOWN:  playerY++; break;
+          case SDLK_LEFT:
+            if (playerX > 0) playerX--;
+            break;
+          case SDLK_RIGHT:
+            if (playerX < size - 1) playerX++;
+            break;
+          case SDLK_UP:
+            if (playerY > 0) playerY--;
+            break;
+          case SDLK_DOWN:
+            if (playerY < size - 1) playerY++;
+            break;
       }
       break;
     default:
@@ -74,7 +82,7 @@ void Maze::update() {}
 
 void Maze::render() {
   // Set draw color to black
-  SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+  SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 
   // This function colors in the whole window
   SDL_RenderClear(renderer);
@@ -85,7 +93,7 @@ void Maze::render() {
         SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
         int xPos = x * CELL_SIZE;
         int yPos = y * CELL_SIZE + 1;
-        SDL_Rect player = { xPos, yPos, CELL_SIZE, CELL_SIZE - 2 };
+        SDL_Rect player = { xPos, yPos, CELL_SIZE, CELL_SIZE - 1 };
         SDL_RenderFillRect(renderer, &player);
       }
       cells[x][y].renderCell(renderer, x, y);

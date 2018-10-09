@@ -2,7 +2,7 @@
 
 // Cell size constraint
 // TODO move to util file
-const int CELL_SIZE = 50;
+const int CELL_SIZE = 25;
 
 Cell::Cell() {
   up = false;
@@ -15,10 +15,32 @@ Cell::~Cell() {
 
 }
 
+/*
+ * direction can be one of:
+ *  0 = up
+ *  1 = down
+ *  2 = left
+ *  3 = right
+ */
+bool Cell::canMove(int direction) {
+  switch(direction) {
+    case 0:
+      return up;
+    case 1:
+      return down;
+    case 2:
+      return left;
+    case 3:
+      return right;
+    default:
+      return false;
+  }
+}
+
 void Cell::renderCell(SDL_Renderer *renderer, int x, int y) {
   // Change color to white
-  SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-  
+  SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+
   if (!up) {
     int xPos1 = x * CELL_SIZE;
     int xPos2 = xPos1 + CELL_SIZE;

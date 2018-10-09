@@ -8,11 +8,9 @@ int main( int argc, char* args[] ) {
 	maze.init();
 
 	while (maze.running()) {
-
 		maze.handleInput();
 		maze.update();
 		maze.render();
-	
 	} 
 
 	maze.clean();
