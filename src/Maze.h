@@ -25,6 +25,8 @@ public:
 private:
   bool isRunning;
   int size;
+  int playerX;
+  int playerY;
   Cell** cells;
   SDL_Window *maze;
   SDL_Renderer *renderer;

@@ -16,6 +16,9 @@ Cell::~Cell() {
 }
 
 void Cell::renderCell(SDL_Renderer *renderer, int x, int y) {
+  // Change color to white
+  SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+  
   if (!up) {
     int xPos1 = x * CELL_SIZE;
     int xPos2 = xPos1 + CELL_SIZE;

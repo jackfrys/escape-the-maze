@@ -10,6 +10,8 @@ Maze::Maze() {
   // Dynamically generate the 2D array
   // Eventually this constructor will take a difficulty and change the size
   size = 10;
+  playerX = 0;
+  playerY = 0;
   cells = new Cell*[size];
   for(int i = 0; i < size; ++i) {
     cells[i] = new Cell[size];
@@ -53,6 +55,15 @@ void Maze::handleInput() {
     case SDL_QUIT:
       isRunning = false;
       break;
+    case SDL_KEYDOWN:
+      switch (event.key.keysym.sym)
+      {
+          case SDLK_LEFT:  playerX--; break;
+          case SDLK_RIGHT: playerX++; break;
+          case SDLK_UP:    playerY--; break;
+          case SDLK_DOWN:  playerY++; break;
+      }
+      break;
     default:
       break;
   }
@@ -68,11 +79,15 @@ void Maze::render() {
   // This function colors in the whole window
   SDL_RenderClear(renderer);
   
-  // Change color to white
-  SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-  
   for (int x = 0; x < size; x++) {
     for (int y = 0; y < size; y++) {
+      if (playerX == x && playerY == y) {
+        SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
+        int xPos = x * CELL_SIZE;
+        int yPos = y * CELL_SIZE + 1;
+        SDL_Rect player = { xPos, yPos, CELL_SIZE, CELL_SIZE - 2 };
+        SDL_RenderFillRect(renderer, &player);
+      }
       cells[x][y].renderCell(renderer, x, y);
     }
   }
