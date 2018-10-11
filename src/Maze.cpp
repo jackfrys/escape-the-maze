@@ -1,8 +1,21 @@
 #include "Maze.h"
 #include "Cell.h"
+#include <algorithm>
+#include <array>
+#include <random>
 
 // Cell size constraint
 const int CELL_SIZE = 25;
+
+/* 
+ * 0 = up
+ * 1 = down
+ * 2 = left
+ * 3 = right
+ */
+int DIRECTIONS[4] = { 0, 1, 2, 3 };
+const int DX[4] = { 0, 0, 1, -1};
+const int DY[4] = { 1, -1, 0, 0};
 
 using namespace std;
 
@@ -26,6 +39,27 @@ Maze::~Maze() {
   delete cells;
 }
 
+void Maze::generateMaze(int sx, int sy) {
+  // Randomly shuffle the directions
+  unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+  shuffle(begin(DIRECTIONS), end(DIRECTIONS), default_random_engine(seed));
+
+  for (int i = 0; i < 4; i++) {
+    // Generate the new coords for the next cell
+    int nx = sx + DX[DIRECTIONS[i]];
+    int ny = sy + DY[DIRECTIONS[i]];
+
+    // If it's a valid cell then break the walls and recurse
+    if ((ny < size && ny >= 0) && (nx < size && nx >= 0) && cells[nx][ny].notVisited()) {
+      cells[nx][ny].breakWall(DIRECTIONS[i]);
+      cells[nx][ny].setVisited();
+      cells[sx][sy].breakOppWall(DIRECTIONS[i]);
+      cells[sx][sy].setVisited();
+      generateMaze(nx, ny);
+    }
+  }
+}
+
 void Maze::init() {
   // Initialize the SDL2 stuff
   if (SDL_Init(SDL_INIT_EVERYTHING) == 0) {
@@ -38,6 +72,8 @@ void Maze::init() {
 
     // Initialize the SDL2 Renderer
     renderer = SDL_CreateRenderer(maze, -1, 0);
+
+    generateMaze(0, 0);
     
     isRunning = true;
   } else {
@@ -59,16 +95,16 @@ void Maze::handleInput() {
       switch (event.key.keysym.sym)
       {
           case SDLK_LEFT:
-            if (playerX > 0) playerX--;
+            if (playerX > 0 && cells[playerX][playerY].canMove(2)) playerX--;
             break;
           case SDLK_RIGHT:
-            if (playerX < size - 1) playerX++;
+            if (playerX < size - 1 && cells[playerX][playerY].canMove(3)) playerX++;
             break;
           case SDLK_UP:
-            if (playerY > 0) playerY--;
+            if (playerY > 0 && cells[playerX][playerY].canMove(0)) playerY--;
             break;
           case SDLK_DOWN:
-            if (playerY < size - 1) playerY++;
+            if (playerY < size - 1 && cells[playerX][playerY].canMove(1)) playerY++;
             break;
       }
       break;

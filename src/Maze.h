@@ -21,6 +21,7 @@ public:
   void render();
   void clean();
   bool running();
+  void generateMaze(int sx, int sy);
 
 private:
   bool isRunning;

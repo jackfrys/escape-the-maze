@@ -5,10 +5,11 @@
 const int CELL_SIZE = 25;
 
 Cell::Cell() {
-  up = false;
-  down = false;
-  left = true;
-  right = true;
+  up = 0;
+  down = 0;
+  left = 0;
+  right = 0;
+  visited = false;
 }
 
 Cell::~Cell() {
@@ -76,4 +77,46 @@ void Cell::renderCell(SDL_Renderer *renderer, int x, int y) {
 
     SDL_RenderDrawLine(renderer, xPos1, yPos1, xPos2, yPos2);
   }
+}
+
+void Cell::breakWall(int direction) {
+  switch (direction) {
+    case 0:
+      up = 1;
+      break;
+    case 1:
+      down = 1;
+      break;
+    case 2:
+      left = 1;
+      break;
+    case 3:
+      right = 1;
+      break;
+  }
+}
+
+void Cell::breakOppWall(int direction) {
+  switch (direction) {
+    case 0:
+      down = 1;
+      break;
+    case 1:
+      up = 1;
+      break;
+    case 2:
+      right = 1;
+      break;
+    case 3:
+      left = 1;
+      break;
+  }
+}
+
+bool Cell::notVisited() {
+  return !visited;
+}
+
+void Cell::setVisited() {
+  visited = true;
 }
