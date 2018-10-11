@@ -68,7 +68,7 @@ void Maze::init() {
     int height = size * CELL_SIZE;
 
     // initialize the SDL2 Window
-    maze = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN);
+    maze = SDL_CreateWindow("MAZE ESCAPE", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN);
 
     // Initialize the SDL2 Renderer
     renderer = SDL_CreateRenderer(maze, -1, 0);
@@ -111,6 +111,10 @@ void Maze::handleInput() {
     default:
       break;
   }
+
+  if (playerX == size - 1 && playerY == size -1) {
+    isRunning = false;
+  }
 }
 
 // TODO no clue yet
@@ -122,14 +126,16 @@ void Maze::render() {
 
   // This function colors in the whole window
   SDL_RenderClear(renderer);
-  
+
   for (int x = 0; x < size; x++) {
     for (int y = 0; y < size; y++) {
       if (playerX == x && playerY == y) {
         SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
-        int xPos = x * CELL_SIZE;
-        int yPos = y * CELL_SIZE + 1;
-        SDL_Rect player = { xPos, yPos, CELL_SIZE, CELL_SIZE - 1 };
+        int modifier = 4;
+        int xPos = x * CELL_SIZE + modifier;
+        int yPos = y * CELL_SIZE + modifier;
+        int size = CELL_SIZE - (modifier * 2);
+        SDL_Rect player = { xPos, yPos, size, size };
         SDL_RenderFillRect(renderer, &player);
       }
       cells[x][y].renderCell(renderer, x, y);
