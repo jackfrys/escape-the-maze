@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <array>
 #include <random>
+#include <chrono>
 
 // Cell size constraint
 const int CELL_SIZE = 25;
