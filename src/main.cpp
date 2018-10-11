@@ -2,6 +2,8 @@
 #include <SDL2/SDL.h>
 #include "Maze.h"
 
+using namespace std;
+
 int main( int argc, char* args[] ) {
 	
 	Maze maze;
@@ -13,6 +15,7 @@ int main( int argc, char* args[] ) {
 		maze.render();
 	} 
 
+	cout << "YOU WIN!" << endl;
 	maze.clean();
 
 	return 0;

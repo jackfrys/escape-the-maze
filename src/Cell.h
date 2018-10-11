@@ -10,12 +10,17 @@ public:
   ~Cell();
   void renderCell(SDL_Renderer *renderer, int x, int y);
   bool canMove(int direction);
+  void breakWall(int direction);
+  void breakOppWall(int direction);
+  bool notVisited();
+  void setVisited();
 
 private:
   int up;
   int down;
   int left;
   int right;
+  bool visited;
 };
 
 #endif
