@@ -5,10 +5,10 @@
 const int CELL_SIZE = 25;
 
 Cell::Cell() {
-  up = 0;
-  down = 0;
-  left = 0;
-  right = 0;
+  up = false;
+  down = false;
+  left = false;
+  right = false;
   visited = false;
 }
 
@@ -82,16 +82,16 @@ void Cell::renderCell(SDL_Renderer *renderer, int x, int y) {
 void Cell::breakWall(int direction) {
   switch (direction) {
     case 0:
-      up = 1;
+      up = true;
       break;
     case 1:
-      down = 1;
+      down = true;
       break;
     case 2:
-      left = 1;
+      left = true;
       break;
     case 3:
-      right = 1;
+      right = true;
       break;
   }
 }
@@ -99,16 +99,16 @@ void Cell::breakWall(int direction) {
 void Cell::breakOppWall(int direction) {
   switch (direction) {
     case 0:
-      down = 1;
+      down = true;
       break;
     case 1:
-      up = 1;
+      up = true;
       break;
     case 2:
-      right = 1;
+      right = true;
       break;
     case 3:
-      left = 1;
+      left = true;
       break;
   }
 }

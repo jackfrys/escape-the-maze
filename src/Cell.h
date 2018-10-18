@@ -16,10 +16,10 @@ public:
   void setVisited();
 
 private:
-  int up;
-  int down;
-  int left;
-  int right;
+  bool up;
+  bool down;
+  bool left;
+  bool right;
   bool visited;
 };
 
