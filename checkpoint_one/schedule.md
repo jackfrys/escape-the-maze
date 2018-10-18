@@ -4,7 +4,7 @@
 - [x] Set up basic program with graphics rendering
 - [x] Implement basic data structures for holding environment state
 - [x] Render the static environment using the graphics library
-- [ ] Establish algorithms for random environment generation (optional)
+- [x] Establish algorithms for random environment generation (optional)
 
 ## Checkpoint 2
 - [x] Implement player movement in model
