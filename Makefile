@@ -1,6 +1,6 @@
-all: maze
+all: main
 	
-maze: main.o Maze.o Cell.o
+main: main.o Maze.o Cell.o
 	g++ -std=c++11 -Wall -o $@ $^ -lSDL2
 
 main.o: src/main.cpp src/Maze.h
