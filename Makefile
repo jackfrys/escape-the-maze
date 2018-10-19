@@ -13,4 +13,4 @@ Cell.o: src/Cell.cpp src/Cell.h
 	g++ -c -std=c++11 -Wall -O2 -o $@ $<
 
 clean:
-	rm -f maze main.o Maze.o Cell.o
+	rm -f main main.o Maze.o Cell.o
