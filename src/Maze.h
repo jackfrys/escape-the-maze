@@ -9,6 +9,7 @@ class Maze {
 
 public:
   Maze();
+  Maze(int newSize);
   ~Maze();
 
   void init();

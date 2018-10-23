@@ -1,12 +1,10 @@
 #include "Maze.h"
 #include "Cell.h"
+#include "Util.h"
 #include <algorithm>
 #include <array>
 #include <random>
 #include <chrono>
-
-// Cell size constraint
-const int CELL_SIZE = 25;
 
 /* 
  * 0 = up
@@ -15,15 +13,25 @@ const int CELL_SIZE = 25;
  * 3 = right
  */
 int DIRECTIONS[4] = { 0, 1, 2, 3 };
-const int DX[4] = { 0, 0, 1, -1};
-const int DY[4] = { 1, -1, 0, 0};
 
 using namespace std;
 
 Maze::Maze() {
   // Dynamically generate the 2D array
   // Eventually this constructor will take a difficulty and change the size
-  size = 10;
+  size = DEFAULT_MAZE_SIZE;
+  playerX = 0;
+  playerY = 0;
+  cells = new Cell*[size];
+  for(int i = 0; i < size; ++i) {
+    cells[i] = new Cell[size];
+  }
+}
+
+Maze::Maze(int newSize) {
+  // Dynamically generate the 2D array
+  // Eventually this constructor will take a difficulty and change the size
+  size = newSize;
   playerX = 0;
   playerY = 0;
   cells = new Cell*[size];
@@ -95,18 +103,18 @@ void Maze::handleInput() {
     case SDL_KEYDOWN:
       switch (event.key.keysym.sym)
       {
-          case SDLK_LEFT:
-            if (playerX > 0 && cells[playerX][playerY].canMove(2)) playerX--;
-            break;
-          case SDLK_RIGHT:
-            if (playerX < size - 1 && cells[playerX][playerY].canMove(3)) playerX++;
-            break;
-          case SDLK_UP:
-            if (playerY > 0 && cells[playerX][playerY].canMove(0)) playerY--;
-            break;
-          case SDLK_DOWN:
-            if (playerY < size - 1 && cells[playerX][playerY].canMove(1)) playerY++;
-            break;
+        case SDLK_LEFT:
+          if (playerX > 0 && cells[playerX][playerY].canMove(2)) playerX--;
+          break;
+        case SDLK_RIGHT:
+          if (playerX < size - 1 && cells[playerX][playerY].canMove(3)) playerX++;
+          break;
+        case SDLK_UP:
+          if (playerY > 0 && cells[playerX][playerY].canMove(0)) playerY--;
+          break;
+        case SDLK_DOWN:
+          if (playerY < size - 1 && cells[playerX][playerY].canMove(1)) playerY++;
+          break;
       }
       break;
     default:

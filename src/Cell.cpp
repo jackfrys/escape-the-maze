@@ -1,8 +1,5 @@
 #include "Cell.h"
-
-// Cell size constraint
-// TODO move to util file
-const int CELL_SIZE = 25;
+#include "Util.h"
 
 Cell::Cell() {
   up = false;

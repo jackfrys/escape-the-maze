@@ -5,7 +5,6 @@
 using namespace std;
 
 int main( int argc, char* args[] ) {
-	
 	Maze maze;
 	maze.init();
 
