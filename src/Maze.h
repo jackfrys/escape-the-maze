@@ -3,6 +3,7 @@
 
 #include "SDL2/SDL.h"
 #include "Cell.h"
+#include "Util.h"
 #include <iostream>
 
 class Maze {
@@ -27,8 +28,7 @@ public:
 private:
   bool isRunning;
   int size;
-  int playerX;
-  int playerY;
+  Posn player;
   Cell** cells;
   SDL_Window *maze;
   SDL_Renderer *renderer;

@@ -16,12 +16,18 @@ int DIRECTIONS[4] = { 0, 1, 2, 3 };
 
 using namespace std;
 
+Posn startingPosition() {
+  Posn p = Posn();
+  p.x = 0;
+  p.y = 0;
+  return p;
+}
+
 Maze::Maze() {
   // Dynamically generate the 2D array
   // Eventually this constructor will take a difficulty and change the size
   size = DEFAULT_MAZE_SIZE;
-  playerX = 0;
-  playerY = 0;
+  player = startingPosition();
   cells = new Cell*[size];
   for(int i = 0; i < size; ++i) {
     cells[i] = new Cell[size];
@@ -32,8 +38,7 @@ Maze::Maze(int newSize) {
   // Dynamically generate the 2D array
   // Eventually this constructor will take a difficulty and change the size
   size = newSize;
-  playerX = 0;
-  playerY = 0;
+  player = startingPosition();
   cells = new Cell*[size];
   for(int i = 0; i < size; ++i) {
     cells[i] = new Cell[size];
@@ -104,16 +109,16 @@ void Maze::handleInput() {
       switch (event.key.keysym.sym)
       {
         case SDLK_LEFT:
-          if (playerX > 0 && cells[playerX][playerY].canMove(2)) playerX--;
+          if (player.x > 0 && cells[player.x][player.y].canMove(2)) player.x--;
           break;
         case SDLK_RIGHT:
-          if (playerX < size - 1 && cells[playerX][playerY].canMove(3)) playerX++;
+          if (player.x < size - 1 && cells[player.x][player.y].canMove(3)) player.x++;
           break;
         case SDLK_UP:
-          if (playerY > 0 && cells[playerX][playerY].canMove(0)) playerY--;
+          if (player.y > 0 && cells[player.x][player.y].canMove(0)) player.y--;
           break;
         case SDLK_DOWN:
-          if (playerY < size - 1 && cells[playerX][playerY].canMove(1)) playerY++;
+          if (player.y < size - 1 && cells[player.x][player.y].canMove(1)) player.y++;
           break;
       }
       break;
@@ -121,7 +126,7 @@ void Maze::handleInput() {
       break;
   }
 
-  if (playerX == size - 1 && playerY == size -1) {
+  if (player.x == size - 1 && player.y == size -1) {
     isRunning = false;
   }
 }
@@ -138,7 +143,7 @@ void Maze::render() {
 
   for (int x = 0; x < size; x++) {
     for (int y = 0; y < size; y++) {
-      if (playerX == x && playerY == y) {
+      if (player.x == x && player.y == y) {
         SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
         int modifier = 4;
         int xPos = x * CELL_SIZE + modifier;
