@@ -24,25 +24,11 @@ Posn startingPosition() {
 }
 
 Maze::Maze() {
-  // Dynamically generate the 2D array
-  // Eventually this constructor will take a difficulty and change the size
-  size = DEFAULT_MAZE_SIZE;
-  player = startingPosition();
-  cells = new Cell*[size];
-  for(int i = 0; i < size; ++i) {
-    cells[i] = new Cell[size];
-  }
+  privateInit(DEFAULT_MAZE_SIZE);
 }
 
 Maze::Maze(int newSize) {
-  // Dynamically generate the 2D array
-  // Eventually this constructor will take a difficulty and change the size
-  size = newSize;
-  player = startingPosition();
-  cells = new Cell*[size];
-  for(int i = 0; i < size; ++i) {
-    cells[i] = new Cell[size];
-  }
+  privateInit(newSize);
 }
 
 Maze::~Maze() {
@@ -167,4 +153,15 @@ void Maze::clean() {
 
 bool Maze::running() {
   return isRunning;
+}
+
+void Maze::privateInit(int newSize) {
+  // Dynamically generate the 2D array
+  // Eventually this constructor will take a difficulty and change the size
+  size = newSize;
+  player = startingPosition();
+  cells = new Cell*[size];
+  for(int i = 0; i < size; ++i) {
+    cells[i] = new Cell[size];
+  }
 }

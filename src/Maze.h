@@ -26,6 +26,7 @@ public:
   void generateMaze(int sx, int sy);
 
 private:
+  void privateInit(int newSize);
   bool isRunning;
   int size;
   Posn player;
