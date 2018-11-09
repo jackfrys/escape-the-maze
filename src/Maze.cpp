@@ -168,7 +168,7 @@ void Maze::render() {
       for (int i = 0; i < KEY_COUNT; i++) {
         Key k = keys[i];
         if (!k.found && k.p.x == x && k.p.y == y) {
-          SDL_SetRenderDrawColor(renderer, 0, 255, 255, 0);
+          SDL_SetRenderDrawColor(renderer, 255, 185, 0, 0);
           int modifier = 4;
           int xPos = x * CELL_SIZE + modifier;
           int yPos = y * CELL_SIZE + modifier;
