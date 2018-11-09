@@ -1,5 +1,5 @@
-#include "Cell.h"
-#include "Util.h"
+#include "Cell.hpp"
+#include "Util.hpp"
 
 Cell::Cell() {
   up = false;

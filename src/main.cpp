@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <SDL2/SDL.h>
-#include "Maze.h"
+#include "Maze.hpp"
 
 using namespace std;
 

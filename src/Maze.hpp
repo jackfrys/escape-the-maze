@@ -2,8 +2,8 @@
 #define MAZE_H
 
 #include "SDL2/SDL.h"
-#include "Cell.h"
-#include "Util.h"
+#include "Cell.hpp"
+#include "Util.hpp"
 #include <iostream>
 
 class Maze {
