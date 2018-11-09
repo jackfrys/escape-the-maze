@@ -27,10 +27,13 @@ public:
 
 private:
   void privateInit(int newSize);
+  void updateKeys();
   bool isRunning;
   int size;
+  int remainingKeys;
   Posn player;
   Cell** cells;
+  Key *keys;
   SDL_Window *maze;
   SDL_Renderer *renderer;
 };

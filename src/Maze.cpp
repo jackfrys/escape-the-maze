@@ -5,6 +5,7 @@
 #include <array>
 #include <random>
 #include <chrono>
+#include <cstdlib>
 
 /* 
  * 0 = up
@@ -37,6 +38,7 @@ Maze::~Maze() {
     delete[] cells[i];
   }
   delete cells;
+  delete keys;
 }
 
 void Maze::generateMaze(int sx, int sy) {
@@ -57,6 +59,16 @@ void Maze::generateMaze(int sx, int sy) {
       cells[sx][sy].setVisited();
       generateMaze(nx, ny);
     }
+  }
+
+  for (int i = 0; i < KEY_COUNT; i++) {
+    Posn p = Posn();
+    p.x = rand() % size;
+    p.y = rand() % size;
+    Key k = Key();
+    k.p = p;
+    k.found = false;
+    keys[i] = k;
   }
 }
 
@@ -112,8 +124,22 @@ void Maze::handleInput() {
       break;
   }
 
-  if (player.x == size - 1 && player.y == size -1) {
+  updateKeys();
+  if (player.x == size - 1 && player.y == size -1 && remainingKeys == 0) {
     isRunning = false;
+  }
+}
+
+bool keyFound(Key k, Posn p) {
+  return k.p.x == p.x && k.p.y == p.y;
+}
+
+void Maze::updateKeys() {
+  for (int i = 0; i < KEY_COUNT; i++) {
+    if (!keys[i].found && keyFound(keys[i], player)) {
+      keys[i].found = true;
+      remainingKeys--;
+    }
   }
 }
 
@@ -137,6 +163,19 @@ void Maze::render() {
         int size = CELL_SIZE - (modifier * 2);
         SDL_Rect player = { xPos, yPos, size, size };
         SDL_RenderFillRect(renderer, &player);
+      }
+
+      for (int i = 0; i < KEY_COUNT; i++) {
+        Key k = keys[i];
+        if (!k.found && k.p.x == x && k.p.y == y) {
+          SDL_SetRenderDrawColor(renderer, 0, 255, 255, 0);
+          int modifier = 4;
+          int xPos = x * CELL_SIZE + modifier;
+          int yPos = y * CELL_SIZE + modifier;
+          int size = CELL_SIZE - (modifier * 2);
+          SDL_Rect key = { xPos, yPos, size, size };
+          SDL_RenderFillRect(renderer, &key);
+        }
       }
       cells[x][y].renderCell(renderer, x, y);
     }
@@ -164,4 +203,6 @@ void Maze::privateInit(int newSize) {
   for(int i = 0; i < size; ++i) {
     cells[i] = new Cell[size];
   }
+  keys = new Key[KEY_COUNT];
+  remainingKeys = KEY_COUNT;
 }
