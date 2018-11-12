@@ -28,12 +28,15 @@ public:
 private:
   void privateInit(int newSize);
   void updateKeys();
+  void updateGuards();
   bool isRunning;
   int size;
   int remainingKeys;
+  unsigned long int time;
   Posn player;
   Cell** cells;
   Key *keys;
+  Guard *guards;
   SDL_Window *maze;
   SDL_Renderer *renderer;
 };

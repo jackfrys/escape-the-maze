@@ -6,6 +6,7 @@
 #include <random>
 #include <chrono>
 #include <cstdlib>
+#include <unistd.h>
 
 /* 
  * 0 = up
@@ -16,6 +17,10 @@
 int DIRECTIONS[4] = { 0, 1, 2, 3 };
 
 using namespace std;
+
+int randInt(int min, int max) {
+  return min + (rand() % static_cast<int>(max - min + 1));
+}
 
 Posn startingPosition() {
   Posn p = Posn();
@@ -39,6 +44,7 @@ Maze::~Maze() {
   }
   delete [] cells;
   delete [] keys;
+  delete [] guards;
 }
 
 void Maze::generateMaze(int sx, int sy) {
@@ -69,6 +75,15 @@ void Maze::generateMaze(int sx, int sy) {
     k.p = p;
     k.found = false;
     keys[i] = k;
+  }
+
+  for (int i = 0; i < GUARD_COUNT; i++) {
+    Posn p = Posn();
+    p.x = rand() % size;
+    p.y = rand() % size;
+    Guard g = Guard();
+    g.p = p;
+    guards[i] = g;
   }
 }
 
@@ -134,6 +149,10 @@ bool keyFound(Key k, Posn p) {
   return k.p.x == p.x && k.p.y == p.y;
 }
 
+bool guardCollide(Guard g, Posn p) {
+  return g.p.x == p.x && g.p.y == p.y;
+}
+
 void Maze::updateKeys() {
   for (int i = 0; i < KEY_COUNT; i++) {
     if (!keys[i].found && keyFound(keys[i], player)) {
@@ -143,8 +162,40 @@ void Maze::updateKeys() {
   }
 }
 
+void Maze::updateGuards() {
+  for (int i = 0; i < GUARD_COUNT; i++) {
+    int x = guards[i].p.x;
+    int y = guards[i].p.y;
+    if (guardCollide(guards[i], player)) {
+      isRunning = false;
+    }
+    int rand = randInt(1, 4);
+    switch (rand) {
+      case 1:
+        if (x > 0 && cells[x][y].canMove(2)) guards[i].p.x--;
+        break;
+      case 2:
+        if (x < size - 1 && cells[x][y].canMove(3)) guards[i].p.x++;
+        break;
+      case 3:
+        if (y > 0 && cells[x][y].canMove(0)) guards[i].p.y--;
+        break;
+      case 4:
+        if (y < size - 1 && cells[x][y].canMove(1)) guards[i].p.y++;
+        break;
+      default:
+        break;
+    }
+  }
+}
+
 // TODO no clue yet
-void Maze::update() {}
+void Maze::update() {
+  if (time%150 == 0) {
+    updateGuards();
+  }
+  time++;
+}
 
 void Maze::render() {
   // Set draw color to black
@@ -177,6 +228,19 @@ void Maze::render() {
           SDL_RenderFillRect(renderer, &key);
         }
       }
+
+      for (int i = 0; i < GUARD_COUNT; i++) {
+        Guard g = guards[i];
+        if (g.p.x == x && g.p.y == y) {
+          SDL_SetRenderDrawColor(renderer, 0, 185, 0, 0);
+          int modifier = 4;
+          int xPos = x * CELL_SIZE + modifier;
+          int yPos = y * CELL_SIZE + modifier;
+          int size = CELL_SIZE - (modifier * 2);
+          SDL_Rect guard = { xPos, yPos, size, size };
+          SDL_RenderFillRect(renderer, &guard);
+        }
+      }
       cells[x][y].renderCell(renderer, x, y);
     }
   }
@@ -205,4 +269,5 @@ void Maze::privateInit(int newSize) {
   }
   keys = new Key[KEY_COUNT];
   remainingKeys = KEY_COUNT;
+  guards = new Guard[GUARD_COUNT];
 }

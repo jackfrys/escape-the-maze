@@ -8,6 +8,8 @@ const int DEFAULT_MAZE_SIZE = 20;
 
 const int KEY_COUNT = 3;
 
+const int GUARD_COUNT = 3;
+
 const int DX[4] = { 0, 0, 1, -1};
 const int DY[4] = { 1, -1, 0, 0};
 
@@ -19,6 +21,10 @@ struct Posn {
 struct Key {
     Posn p;
     bool found;
+};
+
+struct Guard {
+	Posn p;
 };
 
 #endif
