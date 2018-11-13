@@ -5,7 +5,15 @@
 using namespace std;
 
 int main( int argc, char* args[] ) {
-	Maze maze;
+	int difficulty;
+
+	cout << "1. Easy" << endl;
+	cout << "2. Medium" << endl;
+	cout << "3. Hard" << endl;
+	cout << "Which difficulty would you like to play at? " << endl;
+	cin >> difficulty;
+
+	Maze maze(difficulty);
 	maze.init();
 
 	while (maze.running()) {

@@ -33,7 +33,24 @@ Maze::Maze() {
   privateInit(DEFAULT_MAZE_SIZE);
 }
 
-Maze::Maze(int newSize) {
+Maze::Maze(int difficulty) {
+  int newSize;
+
+  switch (difficulty) {
+    case 1:
+      newSize = DEFAULT_MAZE_SIZE;
+      break;
+    case 2:
+      newSize = MEDIUM_MAZE_SIZE;
+      break;
+    case 3:
+      newSize = HARD_MAZE_SIZE;
+      break;
+    default:
+      newSize = DEFAULT_MAZE_SIZE;
+      break;
+  }
+
   privateInit(newSize);
 }
 
