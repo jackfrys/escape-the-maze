@@ -22,7 +22,6 @@ int main( int argc, char* args[] ) {
 		maze.render();
 	} 
 
-	cout << "YOU WIN!" << endl;
 	maze.clean();
 
 	return 0;
