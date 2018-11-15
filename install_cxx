@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+curl https://gigenet.dl.sourceforge.net/project/cxxtest/cxxtest/4.4/cxxtest-4.4.tar.gz > cxxtest-4.4.tar.gz
+tar xpvzf cxxtest-4.4.tar.gz
+chmod 755 cxxtest-4.4/bin/cxxtestgen
+rm cxxtest-4.4.tar.gz
