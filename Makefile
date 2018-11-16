@@ -1,38 +1,44 @@
-CXXTEST_HOME ?= cxxtest-4.4
+# project source and header files
+SOURCES=src/main.cpp src/Maze.cpp src/Cell.cpp 
+HEADERS=src/Maze.h src/Cell.h src/Util.h
+
+# test header files
+TESTS=tests/Maze.cxxtest.h tests/Cell.cxxtest.h
+
+# C++ compile and linker flags
+CPPFLAGS=-Wall -O2
+LDFLAGS=-lSDL2
+
+# location of cxxtest
+CXXTEST_HOME = cxxtest-4.4
 CXXTEST_GEN = $(CXXTEST_HOME)/bin/cxxtestgen
 CXXTEST_INCLUDE = $(CXXTEST_HOME)
 
-all: main
-	
-main: main.o Maze.o Cell.o
-	g++ -std=c++11 -Wall -o $@ $^ -lSDL2
+# additional lists
+MAIN_OBJECTS=$(SOURCES:.cpp=.o)
+TEST_OBJECTS=$(TESTS:.h=.o)
+TEST_SOURCES=$(TESTS:.h=.cpp)
 
-runner: Cell.o Cell.cxxtest.o Maze.o Maze.cxxtest.o runner.o
-	g++ -std=c++11 $^ -Wall -O2 -I$(CXXTEST_INCLUDE) -o $@ -lSDL2
+# rules
+all: main test
 
-test: runner
-	./runner
+main: $(MAIN_OBJECTS)
+	g++ -std=c++11 $(LDFLAGS) $^ -o $@
 
-main.o: src/main.cpp src/Maze.hpp src/Util.hpp
-	g++ -c -std=c++11 -Wall -O2 -I$(CXXTEST_INCLUDE) -o $@ $<
+test: tests/test.o $(TEST_OBJECTS) $(filter-out src/main.o,$(MAIN_OBJECTS))
+	g++ -std=c++11 $(LDFLAGS) $^ -o $@
 
-Maze.o: src/Maze.cpp src/Maze.hpp src/Cell.hpp
-	g++ -c -std=c++11 -Wall -O2 -I$(CXXTEST_INCLUDE) -o $@ $<
+$(MAIN_OBJECTS): %.o: %.cpp $(HEADERS) Makefile
+	g++ -std=c++11 $(CPPFLAGS) -c $< -o $@
 
-Cell.o: src/Cell.cpp src/Cell.hpp src/Util.hpp
-	g++ -c -std=c++11 -Wall -O2 -I$(CXXTEST_INCLUDE) -o $@ $<
+$(TEST_OBJECTS) tests/test.o: %.o: %.cpp $(HEADERS) Makefile
+	g++ -std=c++11 $(CPPFLAGS) -I$(CXXTEST_INCLUDE) -c $< -o $@
 
-%.cxxtest.o: %.cxxtest.cpp src/*.cxxtest.hpp
-	g++ -c -std=c++11 -Wall -O2 $< -I$(CXXTEST_INCLUDE) -o $@
-
-Cell.cxxtest.cpp: src/Cell.cxxtest.hpp
-	$(CXXTEST_GEN) --part --error-printer $< -o $@
-
-Maze.cxxtest.cpp: src/Maze.cxxtest.hpp
-	$(CXXTEST_GEN) --part --error-printer $< -o $@
-
-runner.cpp:
+tests/test.cpp:
 	$(CXXTEST_GEN) --root --error-printer -o $@
 
+$(TEST_SOURCES): %.cpp: %.h
+	$(CXXTEST_GEN) --part --error-printer $< -o $@
+
 clean:
-	rm -f main *.o runner runner.cpp *.cxxtest.cpp
+	rm -f main test tests/test.cpp $(MAIN_OBJECTS) $(TEST_OBJECTS) tests/test.o $(TEST_SOURCES) *~

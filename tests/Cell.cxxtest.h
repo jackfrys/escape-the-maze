@@ -3,7 +3,7 @@
 
 #include <cxxtest/TestSuite.h>
 #include <iostream>
-#include "Cell.hpp"
+#include "../src/Cell.h"
 
 class CellTestSuite : public CxxTest::TestSuite
 {

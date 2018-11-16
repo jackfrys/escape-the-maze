@@ -3,7 +3,7 @@
 
 #include <cxxtest/TestSuite.h>
 #include <iostream>
-#include "Maze.hpp"
+#include "../src/Maze.h"
 
 class MazeTestSuite : public CxxTest::TestSuite
 {

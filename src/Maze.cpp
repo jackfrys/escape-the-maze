@@ -1,6 +1,6 @@
-#include "Maze.hpp"
-#include "Cell.hpp"
-#include "Util.hpp"
+#include "Maze.h"
+#include "Cell.h"
+#include "Util.h"
 #include <algorithm>
 #include <array>
 #include <random>
