@@ -9,8 +9,11 @@ class CellTestSuite : public CxxTest::TestSuite
 {
 public:
 
-  void test_trivial() {
-    TS_ASSERT(true);
+  void test_visiting() {
+    Cell c;
+    TS_ASSERT(c.notVisited());
+    c.setVisited();
+    TS_ASSERT(!c.notVisited());
   }
 
 };

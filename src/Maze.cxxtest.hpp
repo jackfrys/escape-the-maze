@@ -9,8 +9,9 @@ class MazeTestSuite : public CxxTest::TestSuite
 {
 public:
 
-  void test_trivial() {
-    TS_ASSERT(true);
+  void test_newMazeRunning() {
+    Maze m;
+    TS_ASSERT(m.running());
   }
 
 };
