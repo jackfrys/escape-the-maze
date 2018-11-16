@@ -11,3 +11,5 @@ http://weblog.jamisbuck.org/2010/12/27/maze-generation-recursive-backtracking
 This repo helped us figure out which packages are needed for CI builds of the project.
 
 https://github.com/SRombauts/sdlman
+
+The class assignment on unit testing was used to help set up the testing infrastructure.
