@@ -288,4 +288,5 @@ void Maze::privateInit(int newSize) {
   remainingKeys = KEY_COUNT;
   guards = new Guard[GUARD_COUNT];
   time = 0;
+  isRunning = true;
 }
