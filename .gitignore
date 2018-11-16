@@ -7,3 +7,5 @@ main
 cxxtest-4.4
 *.cxxtest.cpp
 runner*
+test
+test.cpp
