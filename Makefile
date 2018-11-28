@@ -23,10 +23,10 @@ TEST_SOURCES=$(TESTS:.h=.cpp)
 all: main test
 
 main: $(MAIN_OBJECTS)
-	g++ -std=c++11 $(LDFLAGS) $^ -o $@
+	g++ -std=c++11 $(CPPFLAGS) $^ -o $@ -lSDL2
 
 test: tests/test.o $(TEST_OBJECTS) $(filter-out src/main.o,$(MAIN_OBJECTS))
-	g++ -std=c++11 $(LDFLAGS) $^ -o $@
+	g++ -std=c++11 $(CPPFLAGS) $^ -o $@ -lSDL2
 
 $(MAIN_OBJECTS): %.o: %.cpp $(HEADERS) Makefile
 	g++ -std=c++11 $(CPPFLAGS) -c $< -o $@
