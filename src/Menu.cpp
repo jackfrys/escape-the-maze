@@ -46,7 +46,9 @@ void Menu::handleInput() {
       {
         case SDLK_UP:
           choice--;
-          choice %= 3;
+          if (choice == -1) {
+            choice = 2;
+          }
           break;
         case SDLK_DOWN:
           choice++;
