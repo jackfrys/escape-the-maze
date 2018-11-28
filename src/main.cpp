@@ -8,6 +8,7 @@ using namespace std;
 int main( int argc, char* args[] ) {
 	Menu menu;
 	menu.init();
+
 	while (menu.running()) {
 		menu.handleInput();
 		menu.render();

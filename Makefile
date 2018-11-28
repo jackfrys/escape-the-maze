@@ -3,7 +3,7 @@ SOURCES=src/main.cpp src/Maze.cpp src/Cell.cpp src/Menu.cpp
 HEADERS=src/Maze.h src/Cell.h src/Util.h src/Menu.h
 
 # test header files
-TESTS=tests/Maze.cxxtest.h tests/Cell.cxxtest.h
+TESTS=tests/Maze.cxxtest.h tests/Cell.cxxtest.h tests/Menu.cxxtest.h
 
 # C++ compile and linker flags
 CPPFLAGS=-Wall -O2
@@ -23,10 +23,10 @@ TEST_SOURCES=$(TESTS:.h=.cpp)
 all: main test
 
 main: $(MAIN_OBJECTS)
-	g++ -std=c++11 $(LDFLAGS) $^ -o $@
+	g++ -std=c++11 $(CPPFLAGS) $^ -o $@ -lSDL2
 
 test: tests/test.o $(TEST_OBJECTS) $(filter-out src/main.o,$(MAIN_OBJECTS))
-	g++ -std=c++11 $(LDFLAGS) $^ -o $@
+	g++ -std=c++11 $(CPPFLAGS) $^ -o $@ -lSDL2
 
 $(MAIN_OBJECTS): %.o: %.cpp $(HEADERS) Makefile
 	g++ -std=c++11 $(CPPFLAGS) -c $< -o $@

@@ -24,6 +24,7 @@ public:
   void clean();
   bool running();
   void generateMaze(int sx, int sy);
+  void changeColorScheme();
 
 private:
   void privateInit(int newSize);
@@ -40,6 +41,10 @@ private:
   Guard *guards;
   SDL_Window *maze;
   SDL_Renderer *renderer;
+  bool isWon;
+  bool isLost;
+  bool alternate;
+  int num_guards;
 };
 
 #endif

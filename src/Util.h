@@ -10,8 +10,6 @@ const int HARD_MAZE_SIZE = 50;
 
 const int KEY_COUNT = 3;
 
-const int GUARD_COUNT = 3;
-
 const int DX[4] = { 0, 0, 1, -1};
 const int DY[4] = { 1, -1, 0, 0};
 

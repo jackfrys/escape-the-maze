@@ -8,7 +8,7 @@ class Cell {
 public:
   Cell();
   ~Cell();
-  void renderCell(SDL_Renderer *renderer, int x, int y);
+  void renderCell(SDL_Renderer *renderer, int x, int y, bool alternate);
   bool canMove(int direction);
   void breakWall(int direction);
   void breakOppWall(int direction);

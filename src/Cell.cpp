@@ -35,9 +35,13 @@ bool Cell::canMove(int direction) {
   }
 }
 
-void Cell::renderCell(SDL_Renderer *renderer, int x, int y) {
+void Cell::renderCell(SDL_Renderer *renderer, int x, int y, bool alternate) {
   // Change color to white
   SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+
+  if (alternate) {
+    SDL_SetRenderDrawColor(renderer, 255, 182, 193, 0);
+  }
 
   if (!up) {
     int xPos1 = x * CELL_SIZE;
