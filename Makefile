@@ -1,6 +1,6 @@
 # project source and header files
-SOURCES=src/main.cpp src/Maze.cpp src/Cell.cpp 
-HEADERS=src/Maze.h src/Cell.h src/Util.h
+SOURCES=src/main.cpp src/Maze.cpp src/Cell.cpp src/Menu.cpp
+HEADERS=src/Maze.h src/Cell.h src/Util.h src/Menu.h
 
 # test header files
 TESTS=tests/Maze.cxxtest.h tests/Cell.cxxtest.h
