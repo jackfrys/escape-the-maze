@@ -30,6 +30,7 @@ int main( int argc, char* args[] ) {
 	}
 
 	Maze second(menu.getChoice() + 1);
+	second.init();
 	second.changeColorScheme();
 	while (second.running()) {
 		second.handleInput();
