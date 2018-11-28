@@ -22,6 +22,7 @@ public:
 private:
   void drawRect(bool filled, SDL_Rect rect);
   bool isRunning;
+  bool showStart;
   int choice;
   SDL_Window *maze;
   SDL_Renderer *renderer;

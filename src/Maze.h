@@ -23,7 +23,6 @@ public:
   void render();
   void clean();
   bool running();
-  bool won();
   void generateMaze(int sx, int sy);
   void changeColorScheme();
 
@@ -42,6 +41,7 @@ private:
   SDL_Window *maze;
   SDL_Renderer *renderer;
   bool isWon;
+  bool isLost;
   bool alternate;
 };
 

@@ -8,9 +8,9 @@ const int DEFAULT_MAZE_SIZE = 20;
 const int MEDIUM_MAZE_SIZE = 30;
 const int HARD_MAZE_SIZE = 50;
 
-const int KEY_COUNT = 3;
+const int KEY_COUNT = 0;
 
-const int GUARD_COUNT = 3;
+const int GUARD_COUNT = 1;
 
 const int DX[4] = { 0, 0, 1, -1};
 const int DY[4] = { 1, -1, 0, 0};

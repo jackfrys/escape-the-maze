@@ -26,6 +26,7 @@ void Menu::init() {
     // Initialize the SDL2 Renderer
     renderer = SDL_CreateRenderer(maze, -1, 0);
     isRunning = true;
+    showStart = true;
   } else {
     isRunning = false;
   }
@@ -55,7 +56,11 @@ void Menu::handleInput() {
           choice %= 3;
           break;
         case SDLK_RETURN:
-          isRunning = false;
+          if (showStart) {
+            showStart = false;
+          } else {
+            isRunning = false;
+          }
           break;
       }
       break;
@@ -65,33 +70,59 @@ void Menu::handleInput() {
 }
 
 void Menu::render() {
-  // Set draw color to black
-  SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+  if (showStart) {
+    // Set draw color to black
+    SDL_SetRenderDrawColor(renderer, 225, 225, 225, 255);
+    SDL_RenderClear(renderer);
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 
-  // This function colors in the whole window
-  SDL_RenderClear(renderer);
+    SDL_RenderDrawLine(renderer, 0, 210, 400, 210);
+    SDL_RenderDrawLine(renderer, 165, 180, 160, 225);
+    SDL_RenderDrawLine(renderer, 165, 180, 170, 225);
+    SDL_RenderDrawLine(renderer, 175, 180, 175, 225);
+    SDL_RenderDrawLine(renderer, 175, 180, 180, 199);
+    SDL_RenderDrawLine(renderer, 180, 199, 185, 180);
+    SDL_RenderDrawLine(renderer, 185, 180, 185, 225);
+    SDL_RenderDrawLine(renderer, 195, 180, 190, 225);
+    SDL_RenderDrawLine(renderer, 195, 180, 200, 225);
+    SDL_RenderDrawLine(renderer, 205, 180, 215, 180);
+    SDL_RenderDrawLine(renderer, 215, 180, 205, 225);
+    SDL_RenderDrawLine(renderer, 205, 225, 215, 225);
+    SDL_RenderDrawLine(renderer, 220, 180, 220, 225);
+    SDL_RenderDrawLine(renderer, 220, 180, 230, 180);
+    SDL_RenderDrawLine(renderer, 220, 225, 230, 225);
+    
 
-  SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
+    SDL_RenderPresent(renderer);
+  } else {
+    // Set draw color to black
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 
-  SDL_Rect top = {180, 50, 30, 30};
-  drawRect(choice == 0, top);
+    // This function colors in the whole window
+    SDL_RenderClear(renderer);
 
-  SDL_Rect middle1 = {165, 150, 30, 30};
-  drawRect(choice == 1, middle1);
+    SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
 
-  SDL_Rect middle2 = {195, 150, 30, 30};
-  drawRect(choice == 1, middle2);
+    SDL_Rect top = {180, 50, 30, 30};
+    drawRect(choice == 0, top);
 
-  SDL_Rect rect = {150, 250, 30, 30};
-  drawRect(choice == 2, rect);
+    SDL_Rect middle1 = {165, 150, 30, 30};
+    drawRect(choice == 1, middle1);
 
-  SDL_Rect rect2 = {180, 250, 30, 30};
-  drawRect(choice == 2, rect2);
+    SDL_Rect middle2 = {195, 150, 30, 30};
+    drawRect(choice == 1, middle2);
 
-  SDL_Rect rect3 = {210, 250, 30, 30};
-  drawRect(choice == 2, rect3);
+    SDL_Rect rect = {150, 250, 30, 30};
+    drawRect(choice == 2, rect);
 
-  SDL_RenderPresent(renderer);
+    SDL_Rect rect2 = {180, 250, 30, 30};
+    drawRect(choice == 2, rect2);
+
+    SDL_Rect rect3 = {210, 250, 30, 30};
+    drawRect(choice == 2, rect3);
+
+    SDL_RenderPresent(renderer);
+  }
 }
 
 void Menu::drawRect(bool filled, SDL_Rect rect) {

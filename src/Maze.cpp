@@ -150,6 +150,9 @@ void Maze::handleInput() {
         case SDLK_DOWN:
           if (player.y < size - 1 && cells[player.x][player.y].canMove(1)) player.y++;
           break;
+        case SDLK_RETURN:
+          if (isWon || isLost) isRunning = false;
+          break;
       }
       break;
     default:
@@ -158,7 +161,6 @@ void Maze::handleInput() {
 
   updateKeys();
   if (player.x == size - 1 && player.y == size -1 && remainingKeys == 0) {
-    isRunning = false;
     isWon = true;
   }
 }
@@ -185,7 +187,7 @@ void Maze::updateGuards() {
     int x = guards[i].p.x;
     int y = guards[i].p.y;
     if (guardCollide(guards[i], player)) {
-      isRunning = false;
+      isLost = true;
     }
     int rand = randInt(1, 4);
     switch (rand) {
@@ -219,55 +221,110 @@ void Maze::render() {
   // Set draw color to black
   SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 
-  if (alternate) {
-    SDL_SetRenderDrawColor(renderer, 152, 251, 152, 255);
-  }
+  if (isWon) {
+    // Set draw color to black
+    SDL_SetRenderDrawColor(renderer, 225, 225, 225, 255);
+    SDL_RenderClear(renderer);
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 
-  // This function colors in the whole window
-  SDL_RenderClear(renderer);
+    SDL_RenderDrawLine(renderer, 170, 180, 170, 225);
+    SDL_RenderDrawLine(renderer, 170, 225, 175, 225);
+    SDL_RenderDrawLine(renderer, 175, 210, 175, 225);
+    SDL_RenderDrawLine(renderer, 175, 225, 180, 225);
+    SDL_RenderDrawLine(renderer, 180, 225, 180, 180);
 
-  for (int x = 0; x < size; x++) {
-    for (int y = 0; y < size; y++) {
-      if (player.x == x && player.y == y) {
-        SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
-        int modifier = 4;
-        int xPos = x * CELL_SIZE + modifier;
-        int yPos = y * CELL_SIZE + modifier;
-        int size = CELL_SIZE - (modifier * 2);
-        SDL_Rect player = { xPos, yPos, size, size };
-        SDL_RenderFillRect(renderer, &player);
-      }
+    SDL_RenderDrawLine(renderer, 190, 225, 190, 180);
 
-      for (int i = 0; i < KEY_COUNT; i++) {
-        Key k = keys[i];
-        if (!k.found && k.p.x == x && k.p.y == y) {
-          SDL_SetRenderDrawColor(renderer, 255, 185, 0, 0);
-          int modifier = 4;
-          int xPos = x * CELL_SIZE + modifier;
-          int yPos = y * CELL_SIZE + modifier;
-          int size = CELL_SIZE - (modifier * 2);
-          SDL_Rect key = { xPos, yPos, size, size };
-          SDL_RenderFillRect(renderer, &key);
-        }
-      }
+    SDL_RenderDrawLine(renderer, 200, 225, 200, 180);
+    SDL_RenderDrawLine(renderer, 200, 180, 210, 225);
+    SDL_RenderDrawLine(renderer, 210, 225, 210, 180);
+    
+    SDL_RenderPresent(renderer);
+  } else if (isLost) {
+    // Set draw color to black
+    SDL_SetRenderDrawColor(renderer, 225, 225, 225, 255);
+    SDL_RenderClear(renderer);
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 
-      for (int i = 0; i < GUARD_COUNT; i++) {
-        Guard g = guards[i];
-        if (g.p.x == x && g.p.y == y) {
-          SDL_SetRenderDrawColor(renderer, 0, 185, 0, 0);
-          int modifier = 4;
-          int xPos = x * CELL_SIZE + modifier;
-          int yPos = y * CELL_SIZE + modifier;
-          int size = CELL_SIZE - (modifier * 2);
-          SDL_Rect guard = { xPos, yPos, size, size };
-          SDL_RenderFillRect(renderer, &guard);
-        }
-      }
-      cells[x][y].renderCell(renderer, x, y, alternate);
+    SDL_RenderDrawLine(renderer, 160, 185, 160, 225);
+    SDL_RenderDrawLine(renderer, 160, 225, 170, 225);
+
+    SDL_RenderDrawLine(renderer, 175, 225, 185, 225);
+    SDL_RenderDrawLine(renderer, 175, 185, 185, 185);
+    SDL_RenderDrawLine(renderer, 175, 185, 175, 225);
+    SDL_RenderDrawLine(renderer, 185, 185, 185, 225);
+
+    SDL_RenderDrawLine(renderer, 190, 185, 200, 185);
+    SDL_RenderDrawLine(renderer, 190, 185, 190, 205);
+    SDL_RenderDrawLine(renderer, 190, 205, 200, 205);
+    SDL_RenderDrawLine(renderer, 200, 205, 200, 225);
+    SDL_RenderDrawLine(renderer, 200, 225, 190, 225);
+
+    SDL_RenderDrawLine(renderer, 205, 185, 215, 185);
+    SDL_RenderDrawLine(renderer, 210, 185, 210, 225);
+    
+    SDL_RenderPresent(renderer);
+  } else {
+    if (alternate) {
+      SDL_SetRenderDrawColor(renderer, 152, 251, 152, 255);
     }
-  }
 
-  SDL_RenderPresent(renderer);
+    // This function colors in the whole window
+    SDL_RenderClear(renderer);
+
+    for (int x = 0; x < size; x++) {
+      for (int y = 0; y < size; y++) {
+        if (x == size - 1 && y == size - 1) {
+          int modifier = 4;
+          SDL_SetRenderDrawColor(renderer, 139, 69, 19, 255);
+          int xPos = x * CELL_SIZE + modifier;
+          int yPos = y * CELL_SIZE + modifier;
+          int size = CELL_SIZE - (modifier * 2);
+          SDL_Rect door = { xPos, yPos, size, size };
+          SDL_RenderFillRect(renderer, &door);
+        }
+
+        if (player.x == x && player.y == y) {
+          SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
+          int modifier = 4;
+          int xPos = x * CELL_SIZE + modifier;
+          int yPos = y * CELL_SIZE + modifier;
+          int size = CELL_SIZE - (modifier * 2);
+          SDL_Rect player = { xPos, yPos, size, size };
+          SDL_RenderFillRect(renderer, &player);
+        }
+
+        for (int i = 0; i < KEY_COUNT; i++) {
+          Key k = keys[i];
+          if (!k.found && k.p.x == x && k.p.y == y) {
+            SDL_SetRenderDrawColor(renderer, 255, 185, 0, 0);
+            int modifier = 4;
+            int xPos = x * CELL_SIZE + modifier;
+            int yPos = y * CELL_SIZE + modifier;
+            int size = CELL_SIZE - (modifier * 2);
+            SDL_Rect key = { xPos, yPos, size, size };
+            SDL_RenderFillRect(renderer, &key);
+          }
+        }
+
+        for (int i = 0; i < GUARD_COUNT; i++) {
+          Guard g = guards[i];
+          if (g.p.x == x && g.p.y == y) {
+            SDL_SetRenderDrawColor(renderer, 0, 185, 0, 0);
+            int modifier = 4;
+            int xPos = x * CELL_SIZE + modifier;
+            int yPos = y * CELL_SIZE + modifier;
+            int size = CELL_SIZE - (modifier * 2);
+            SDL_Rect guard = { xPos, yPos, size, size };
+            SDL_RenderFillRect(renderer, &guard);
+          }
+        }
+
+        cells[x][y].renderCell(renderer, x, y, alternate);
+      }
+    }
+    SDL_RenderPresent(renderer);
+  }
 }
 
 void Maze::clean() {
@@ -278,10 +335,6 @@ void Maze::clean() {
 
 bool Maze::running() {
   return isRunning;
-}
-
-bool Maze::won() {
-  return isWon;
 }
 
 void Maze::privateInit(int newSize) {
@@ -299,6 +352,7 @@ void Maze::privateInit(int newSize) {
   time = 0;
   isRunning = true;
   isWon = false;
+  isLost = false;
   alternate = false;
 }
 
