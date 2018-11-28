@@ -1,5 +1,5 @@
 language: cpp
-script: ./install_cxx && make
+script: ./install_cxx && make && ./test
 addons:
   apt:
     packages:
