@@ -43,6 +43,7 @@ private:
   bool isWon;
   bool isLost;
   bool alternate;
+  int num_guards;
 };
 
 #endif

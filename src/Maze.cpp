@@ -39,12 +39,15 @@ Maze::Maze(int difficulty) {
   switch (difficulty) {
     case 1:
       newSize = DEFAULT_MAZE_SIZE;
+      num_guards = 1;
       break;
     case 2:
       newSize = MEDIUM_MAZE_SIZE;
+      num_guards = 2;
       break;
     case 3:
       newSize = HARD_MAZE_SIZE;
+      num_guards = 3;
       break;
     default:
       newSize = DEFAULT_MAZE_SIZE;
@@ -94,7 +97,7 @@ void Maze::generateMaze(int sx, int sy) {
     keys[i] = k;
   }
 
-  for (int i = 0; i < GUARD_COUNT; i++) {
+  for (int i = 0; i < num_guards; i++) {
     Posn p = Posn();
     p.x = rand() % size;
     p.y = rand() % size;
@@ -183,7 +186,7 @@ void Maze::updateKeys() {
 }
 
 void Maze::updateGuards() {
-  for (int i = 0; i < GUARD_COUNT; i++) {
+  for (int i = 0; i < num_guards; i++) {
     int x = guards[i].p.x;
     int y = guards[i].p.y;
     if (guardCollide(guards[i], player)) {
@@ -307,7 +310,7 @@ void Maze::render() {
           }
         }
 
-        for (int i = 0; i < GUARD_COUNT; i++) {
+        for (int i = 0; i < num_guards; i++) {
           Guard g = guards[i];
           if (g.p.x == x && g.p.y == y) {
             SDL_SetRenderDrawColor(renderer, 0, 185, 0, 0);
@@ -348,7 +351,7 @@ void Maze::privateInit(int newSize) {
   }
   keys = new Key[KEY_COUNT];
   remainingKeys = KEY_COUNT;
-  guards = new Guard[GUARD_COUNT];
+  guards = new Guard[num_guards];
   time = 0;
   isRunning = true;
   isWon = false;
