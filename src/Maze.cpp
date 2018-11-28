@@ -7,6 +7,30 @@
 #include <chrono>
 #include <cstdlib>
 #include <unistd.h>
+#include <SDL2/SDL_image.h>
+
+// audio stuff
+#define KEY_SOUND_PATH "./src/audio/key.wav"
+#define HURT_SOUND_PATH "./src/audio/hurt.wav"
+static Uint8 *audio_pos; // global pointer to the audio buffer to be played
+static Uint32 audio_len; // remaining length of the sample we have to play
+
+// audio callback function
+// here you have to copy the data of your audio buffer into the
+// requesting audio buffer (stream)
+// you should only copy as much as the requested length (len)
+void my_audio_callback(void *userdata, Uint8 *stream, int len) {
+  
+  if (audio_len == 0)
+    return;
+  
+  len = ( len > audio_len ? audio_len : len );
+  //SDL_memcpy (stream, audio_pos, len);          // simply copy from one buffer into the other
+  SDL_MixAudio(stream, audio_pos, len, SDL_MIX_MAXVOLUME);// mix from one buffer into another
+  
+  audio_pos += len;
+  audio_len -= len;
+}
 
 /* 
  * 0 = up
@@ -55,6 +79,7 @@ Maze::Maze(int difficulty) {
 }
 
 Maze::~Maze() {
+  IMG_Quit();
   // Free up space
   for(int i = 0; i < size; i++) {
     delete [] cells[i];
@@ -105,7 +130,6 @@ void Maze::generateMaze(int sx, int sy) {
 }
 
 void Maze::init() {
-  // Initialize the SDL2 stuff
   if (SDL_Init(SDL_INIT_EVERYTHING) == 0) {
 
     int width = size * CELL_SIZE;
@@ -118,7 +142,7 @@ void Maze::init() {
     renderer = SDL_CreateRenderer(maze, -1, 0);
 
     generateMaze(0, 0);
-    
+
     isRunning = true;
   } else {
     isRunning = false;
@@ -175,6 +199,7 @@ void Maze::updateKeys() {
     if (!keys[i].found && keyFound(keys[i], player)) {
       keys[i].found = true;
       remainingKeys--;
+      playSound(KEY_SOUND_PATH);
     }
   }
 }
@@ -249,13 +274,28 @@ void Maze::render() {
       for (int i = 0; i < GUARD_COUNT; i++) {
         Guard g = guards[i];
         if (g.p.x == x && g.p.y == y) {
-          SDL_SetRenderDrawColor(renderer, 0, 185, 0, 0);
+          SDL_SetRenderDrawColor(renderer, 255, 0, 0, 0);
           int modifier = 4;
           int xPos = x * CELL_SIZE + modifier;
           int yPos = y * CELL_SIZE + modifier;
           int size = CELL_SIZE - (modifier * 2);
-          SDL_Rect guard = { xPos, yPos, size, size };
-          SDL_RenderFillRect(renderer, &guard);
+          SDL_Rect key = { xPos, yPos, size, size };
+          SDL_RenderFillRect(renderer, &key);
+          // std::string path = "./src/img/guard.png";
+          // SDL_Surface* loadedSurface = IMG_Load(path.c_str());
+          // if (loadedSurface == NULL) {
+          //   std::cout <<  "Unable to load image %s! SDL_image Error: %s\n" << path.c_str() << IMG_GetError() << std::endl;
+          // } else {
+          //   SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, loadedSurface); 
+          // //  SDL_FreeSurface(loadedSurface);
+          // //   SDL_Rect destination;
+          // //   destination.x = x * CELL_SIZE + 4;
+          // //   destination.y = y * CELL_SIZE + 4;
+          // //   destination.w = 12;
+          // //   destination.h = 12;
+
+          // //   SDL_RenderCopy(renderer, texture, NULL, &destination);
+          // }
         }
       }
       cells[x][y].renderCell(renderer, x, y);
@@ -263,6 +303,41 @@ void Maze::render() {
   }
 
   SDL_RenderPresent(renderer);
+}
+
+void Maze::playSound(const char * sound) {
+  static Uint32 wav_length; // length of our sample
+  static Uint8 *wav_buffer; // buffer containing our audio file
+  static SDL_AudioSpec wav_spec; // the specs of our piece of music
+  /* Load the WAV */
+  // the specs, length and buffer of our wav are filled
+  if( SDL_LoadWAV(sound, &wav_spec, &wav_buffer, &wav_length) == NULL) {
+    return;
+  }
+  // set the callback function
+  wav_spec.callback = my_audio_callback;
+  wav_spec.userdata = NULL;
+  // set our global static variables
+  audio_pos = wav_buffer; // copy sound buffer
+  audio_len = wav_length; // copy file length
+  
+  /* Open the audio device */
+  if ( SDL_OpenAudio(&wav_spec, NULL) < 0 ){
+    fprintf(stderr, "Couldn't open audio: %s\n", SDL_GetError());
+    exit(-1);
+  }
+  
+  /* Start playing */
+  SDL_PauseAudio(0);
+
+  // wait until we're don't playing
+  while ( audio_len > 0 ) {
+    SDL_Delay(100); 
+  }
+  
+  // shut everything down
+  SDL_CloseAudio();
+  SDL_FreeWAV(wav_buffer);
 }
 
 void Maze::clean() {

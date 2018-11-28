@@ -29,6 +29,7 @@ private:
   void privateInit(int newSize);
   void updateKeys();
   void updateGuards();
+  void playSound(const char * sound);
   bool isRunning;
   int size;
   int remainingKeys;
