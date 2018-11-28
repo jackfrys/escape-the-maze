@@ -159,6 +159,7 @@ void Maze::handleInput() {
   updateKeys();
   if (player.x == size - 1 && player.y == size -1 && remainingKeys == 0) {
     isRunning = false;
+    isWon = true;
   }
 }
 
@@ -218,6 +219,10 @@ void Maze::render() {
   // Set draw color to black
   SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 
+  if (alternate) {
+    SDL_SetRenderDrawColor(renderer, 152, 251, 152, 255);
+  }
+
   // This function colors in the whole window
   SDL_RenderClear(renderer);
 
@@ -258,7 +263,7 @@ void Maze::render() {
           SDL_RenderFillRect(renderer, &guard);
         }
       }
-      cells[x][y].renderCell(renderer, x, y);
+      cells[x][y].renderCell(renderer, x, y, alternate);
     }
   }
 
@@ -275,6 +280,10 @@ bool Maze::running() {
   return isRunning;
 }
 
+bool Maze::won() {
+  return isWon;
+}
+
 void Maze::privateInit(int newSize) {
   // Dynamically generate the 2D array
   // Eventually this constructor will take a difficulty and change the size
@@ -289,4 +298,10 @@ void Maze::privateInit(int newSize) {
   guards = new Guard[GUARD_COUNT];
   time = 0;
   isRunning = true;
+  isWon = false;
+  alternate = false;
+}
+
+void Maze::changeColorScheme() {
+  alternate = true;
 }

@@ -25,5 +25,18 @@ int main( int argc, char* args[] ) {
 
 	maze.clean();
 
+	if (!maze.won()) {
+		return 0;
+	}
+
+	Maze second(menu.getChoice() + 1);
+	second.changeColorScheme();
+	while (second.running()) {
+		second.handleInput();
+		second.update();
+		second.render();
+	}
+	second.clean();
+
 	return 0;
 }
