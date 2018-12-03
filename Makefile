@@ -7,7 +7,7 @@ TESTS=tests/Maze.cxxtest.h tests/Cell.cxxtest.h tests/Menu.cxxtest.h
 
 # C++ compile and linker flags
 CPPFLAGS=-Wall -O2
-LDFLAGS=-lSDL2
+LDFLAGS=-lSDL2 -lSDL_image
 
 # location of cxxtest
 CXXTEST_HOME = cxxtest-4.4
