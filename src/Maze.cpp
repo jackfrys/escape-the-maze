@@ -40,17 +40,22 @@ Maze::Maze(int difficulty) {
     case 1:
       newSize = DEFAULT_MAZE_SIZE;
       num_guards = 1;
+      health = 10;
       break;
     case 2:
       newSize = MEDIUM_MAZE_SIZE;
       num_guards = 2;
+      health = 10;
       break;
     case 3:
       newSize = HARD_MAZE_SIZE;
       num_guards = 3;
+      health = 10;
       break;
     default:
       newSize = DEFAULT_MAZE_SIZE;
+      num_guards = 1;
+      health = 10;
       break;
   }
 
@@ -112,7 +117,7 @@ void Maze::init() {
   if (SDL_Init(SDL_INIT_EVERYTHING) == 0) {
 
     int width = size * CELL_SIZE;
-    int height = size * CELL_SIZE;
+    int height = size * CELL_SIZE + 20;
 
     // initialize the SDL2 Window
     maze = SDL_CreateWindow("MAZE ESCAPE", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN);
@@ -190,7 +195,11 @@ void Maze::updateGuards() {
     int x = guards[i].p.x;
     int y = guards[i].p.y;
     if (guardCollide(guards[i], player)) {
-      isLost = true;
+      if (health <= 1) {
+        isLost = true;
+      } else {
+        health--;
+      }
     }
     int rand = randInt(1, 4);
     switch (rand) {
@@ -326,6 +335,73 @@ void Maze::render() {
         cells[x][y].renderCell(renderer, x, y, alternate);
       }
     }
+
+    int bottomCell = size * CELL_SIZE + 5;
+    
+    switch (health) {
+      case 10:
+        SDL_RenderDrawLine(renderer, 10, bottomCell, 10, bottomCell + 10);
+        SDL_RenderDrawLine(renderer, 15, bottomCell, 20, bottomCell);
+        SDL_RenderDrawLine(renderer, 15, bottomCell, 15, bottomCell + 10);
+        SDL_RenderDrawLine(renderer, 15, bottomCell + 10, 20, bottomCell + 10);
+        SDL_RenderDrawLine(renderer, 20, bottomCell, 20, bottomCell + 10);
+        break;
+      case 9:
+        SDL_RenderDrawLine(renderer, 15, bottomCell, 15, bottomCell + 10);
+        SDL_RenderDrawLine(renderer, 10, bottomCell, 10, bottomCell + 5);
+        SDL_RenderDrawLine(renderer, 10, bottomCell, 15, bottomCell);
+        SDL_RenderDrawLine(renderer, 10, bottomCell + 5, 15, bottomCell + 5);
+        break;
+      case 8:
+        SDL_RenderDrawLine(renderer, 15, bottomCell, 15, bottomCell + 10);
+        SDL_RenderDrawLine(renderer, 10, bottomCell, 10, bottomCell + 10);
+        SDL_RenderDrawLine(renderer, 10, bottomCell, 15, bottomCell);
+        SDL_RenderDrawLine(renderer, 10, bottomCell + 5, 15, bottomCell + 5);
+        SDL_RenderDrawLine(renderer, 10, bottomCell + 10, 15, bottomCell + 10);
+        break;
+      case 7:
+        SDL_RenderDrawLine(renderer, 15, bottomCell, 15, bottomCell + 10);
+        SDL_RenderDrawLine(renderer, 10, bottomCell, 15, bottomCell);
+        break;
+      case 6:
+        SDL_RenderDrawLine(renderer, 10, bottomCell + 10, 10, bottomCell);
+        SDL_RenderDrawLine(renderer, 10, bottomCell + 5, 15, bottomCell + 5);
+        SDL_RenderDrawLine(renderer, 15, bottomCell + 5, 15, bottomCell + 10);
+        SDL_RenderDrawLine(renderer, 10, bottomCell + 10, 15, bottomCell + 10);
+        break;
+      case 5:
+        SDL_RenderDrawLine(renderer, 10, bottomCell, 15, bottomCell);
+        SDL_RenderDrawLine(renderer, 10, bottomCell + 5, 10, bottomCell);
+        SDL_RenderDrawLine(renderer, 10, bottomCell + 5, 15, bottomCell + 5);
+        SDL_RenderDrawLine(renderer, 15, bottomCell + 5, 15, bottomCell + 10);
+        SDL_RenderDrawLine(renderer, 10, bottomCell + 10, 15, bottomCell + 10);
+        break;
+      case 4:
+        SDL_RenderDrawLine(renderer, 10, bottomCell, 15, bottomCell);
+        SDL_RenderDrawLine(renderer, 15, bottomCell + 5, 15, bottomCell);
+        SDL_RenderDrawLine(renderer, 10, bottomCell + 5, 15, bottomCell + 5);
+        SDL_RenderDrawLine(renderer, 10, bottomCell + 5, 10, bottomCell + 10);
+        SDL_RenderDrawLine(renderer, 10, bottomCell + 10, 15, bottomCell + 10);
+        break;
+      case 3:
+        SDL_RenderDrawLine(renderer, 10, bottomCell, 15, bottomCell);
+        SDL_RenderDrawLine(renderer, 15, bottomCell + 5, 15, bottomCell);
+        SDL_RenderDrawLine(renderer, 10, bottomCell + 5, 15, bottomCell + 5);
+        SDL_RenderDrawLine(renderer, 15, bottomCell + 5, 15, bottomCell + 10);
+        SDL_RenderDrawLine(renderer, 10, bottomCell + 10, 15, bottomCell + 10);
+        break;
+      case 2:
+        SDL_RenderDrawLine(renderer, 10, bottomCell, 15, bottomCell);
+        SDL_RenderDrawLine(renderer, 15, bottomCell + 5, 15, bottomCell);
+        SDL_RenderDrawLine(renderer, 10, bottomCell + 5, 15, bottomCell + 5);
+        SDL_RenderDrawLine(renderer, 10, bottomCell + 5, 10, bottomCell + 10);
+        SDL_RenderDrawLine(renderer, 10, bottomCell + 10, 15, bottomCell + 10);
+        break;
+      case 1:
+        SDL_RenderDrawLine(renderer, 10, bottomCell, 10, bottomCell + 10);
+        break;
+    }
+
     SDL_RenderPresent(renderer);
   }
 }

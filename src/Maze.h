@@ -44,6 +44,7 @@ private:
   bool isLost;
   bool alternate;
   int num_guards;
+  int health;
 };
 
 #endif
