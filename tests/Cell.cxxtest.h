@@ -29,8 +29,6 @@ public:
   	c.breakOppWall(1);
   	TS_ASSERT_EQUALS(c.canMove(0), true);
   	TS_ASSERT_EQUALS(c.canMove(1), false);
-
-  	TS_ASSERT_EQUALS(c.canMove(), false);
   }
 
 };
