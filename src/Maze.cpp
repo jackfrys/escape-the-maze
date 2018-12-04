@@ -7,7 +7,6 @@
 #include <chrono>
 #include <cstdlib>
 #include <unistd.h>
-#include <SDL2/SDL_image.h>
 
 // audio stuff
 #define KEY_SOUND_PATH "./src/audio/key.wav"
@@ -422,6 +421,9 @@ void Maze::render() {
         SDL_RenderDrawLine(renderer, 10, bottomCell + 10, 15, bottomCell + 10);
         break;
       case 1:
+        SDL_RenderDrawLine(renderer, 10, bottomCell, 10, bottomCell + 10);
+        break;
+      default:
         SDL_RenderDrawLine(renderer, 10, bottomCell, 10, bottomCell + 10);
         break;
     }
