@@ -419,6 +419,9 @@ void Maze::render() {
       case 1:
         SDL_RenderDrawLine(renderer, 10, bottomCell, 10, bottomCell + 10);
         break;
+      default:
+        SDL_RenderDrawLine(renderer, 10, bottomCell, 10, bottomCell + 10);
+        break;
     }
 
     SDL_RenderPresent(renderer);
