@@ -13,3 +13,17 @@ This repo helped us figure out which packages are needed for CI builds of the pr
 https://github.com/SRombauts/sdlman
 
 The class assignment on unit testing was used to help set up the testing infrastructure.
+
+
+http://lazyfoo.net/tutorials/SDL/21_sound_effects_and_music/index.php
+
+lazy foo tutorials were used to play audio files
+
+https://freesound.org/people/ProjectsU012/sounds/341695/
+
+this audio file was downloaded and used in the game
+
+https://www.libsdl.org/projects/SDL_mixer/
+
+SDL_Mixer was added to the project to load in and play that file
+
