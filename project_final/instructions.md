@@ -1,6 +1,6 @@
 # Instructions
 
-Launch the game from the terminal with `$ ./main`. (Run `./install_cxx` to install the required testing library.) Follow the prompt to choose a difficulty level.
+Launch the game from the terminal with `$ ./main`. (Run `./install_cxx` to install the required testing library.) Follow the prompt to choose a difficulty level. The arrow keys rotate the level selection and return selects the active one.
 
 Once in the maze, use the arrow keys to move the player, `blue`. Collect all the key fragments, `yellow`, to create the key, while avoiding the guards, `green`.
 

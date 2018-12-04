@@ -21,7 +21,7 @@ lazy foo tutorials were used to play audio files
 
 https://freesound.org/people/ProjectsU012/sounds/341695/
 
-this audio file was downloaded and used in the game
+This audio file was downloaded and used in the game. It is licensed under the Creative Commons Attribution License.
 
 https://www.libsdl.org/projects/SDL_mixer/
 
