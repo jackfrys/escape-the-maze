@@ -16,5 +16,5 @@
 - [x] Implement guard capture (lose condition)
 - [x] Implement win conditon (all key fragments, reach end of maze)
 - [x] Implement difficulty levels
-- [ ] Implement menus/meta-game niceties
-- [ ] Add sound effects (optional)
+- [x] Implement menus/meta-game niceties
+- [x] Add sound effects (optional)
