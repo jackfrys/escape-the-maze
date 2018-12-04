@@ -3,7 +3,7 @@ SOURCES=src/main.cpp src/Maze.cpp src/Cell.cpp src/Menu.cpp
 HEADERS=src/Maze.h src/Cell.h src/Util.h src/Menu.h
 
 # test header files
-TESTS=tests/Maze.cxxtest.h tests/Cell.cxxtest.h tests/Menu.cxxtest.h
+TESTS=tests/Maze.cxxtest.h tests/Cell.cxxtest.h tests/Menu.cxxtest.h tests/Key.cxxtest.h tests/Guard.cxxtest.h
 
 # C++ compile and linker flags
 CPPFLAGS=-Wall -O2
