@@ -7,7 +7,7 @@ TESTS=tests/Maze.cxxtest.h tests/Cell.cxxtest.h tests/Menu.cxxtest.h
 
 # C++ compile and linker flags
 CPPFLAGS=-Wall -O2
-LDFLAGS=-lSDL2 -lSDL_image -lSDL_mixer
+LDFLAGS=-lSDL2 -lSDL2_mixer
 
 # location of cxxtest
 CXXTEST_HOME = cxxtest-4.4
@@ -23,10 +23,10 @@ TEST_SOURCES=$(TESTS:.h=.cpp)
 all: main test
 
 main: $(MAIN_OBJECTS)
-	g++ -std=c++11 $(CPPFLAGS) $(LDFLAGS) $^ -o $@ -lSDL2
+	g++ -std=c++11 $(CPPFLAGS) $^ -o $@ $(LDFLAGS)
 
 test: tests/test.o $(TEST_OBJECTS) $(filter-out src/main.o,$(MAIN_OBJECTS))
-	g++ -std=c++11 $(CPPFLAGS) $^ -o $@ -lSDL2
+	g++ -std=c++11 $(CPPFLAGS) $^ -o $@ $(LDFLAGS)
 
 $(MAIN_OBJECTS): %.o: %.cpp $(HEADERS) Makefile
 	g++ -std=c++11 $(CPPFLAGS) -c $< -o $@
@@ -41,4 +41,4 @@ $(TEST_SOURCES): %.cpp: %.h
 	$(CXXTEST_GEN) --part --error-printer $< -o $@
 
 clean:
-	rm -f main test tests/test.cpp $(MAIN_OBJECTS) $(LDFLAGS) $(TEST_OBJECTS) tests/test.o $(TEST_SOURCES) *~
+	rm -f main test tests/test.cpp $(MAIN_OBJECTS) $(TEST_OBJECTS) tests/test.o $(TEST_SOURCES) *~
