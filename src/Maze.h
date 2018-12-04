@@ -4,6 +4,8 @@
 #include "SDL2/SDL.h"
 #include "Cell.h"
 #include "Util.h"
+#include "Key.h"
+#include "Guard.h"
 #include <iostream>
 
 class Maze {

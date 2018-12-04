@@ -14,6 +14,11 @@ public:
     TS_ASSERT(m.running());
   }
 
+  void test_defaultChoice() {
+    Menu m;
+    TS_ASSERT_EQUALS(0, m.getChoice());
+  }
+
 };
 
 #endif

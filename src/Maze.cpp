@@ -1,6 +1,8 @@
 #include "Maze.h"
 #include "Cell.h"
 #include "Util.h"
+#include "Key.h"
+#include "Guard.h"
 #include <algorithm>
 #include <array>
 #include <random>

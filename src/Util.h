@@ -18,13 +18,4 @@ struct Posn {
     int y;
 };
 
-struct Key {
-    Posn p;
-    bool found;
-};
-
-struct Guard {
-	Posn p;
-};
-
 #endif
