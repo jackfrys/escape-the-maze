@@ -8,29 +8,11 @@
 #include <cstdlib>
 #include <unistd.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_mixer.h>
 
 // audio stuff
 #define KEY_SOUND_PATH "./src/audio/key.wav"
-#define HURT_SOUND_PATH "./src/audio/hurt.wav"
-static Uint8 *audio_pos; // global pointer to the audio buffer to be played
-static Uint32 audio_len; // remaining length of the sample we have to play
-
-// audio callback function
-// here you have to copy the data of your audio buffer into the
-// requesting audio buffer (stream)
-// you should only copy as much as the requested length (len)
-void my_audio_callback(void *userdata, Uint8 *stream, int len) {
-  
-  if (audio_len == 0)
-    return;
-  
-  len = ( len > audio_len ? audio_len : len );
-  //SDL_memcpy (stream, audio_pos, len);          // simply copy from one buffer into the other
-  SDL_MixAudio(stream, audio_pos, len, SDL_MIX_MAXVOLUME);// mix from one buffer into another
-  
-  audio_pos += len;
-  audio_len -= len;
-}
+Mix_Music *gKey = NULL;
 
 /* 
  * 0 = up
@@ -137,7 +119,18 @@ void Maze::generateMaze(int sx, int sy) {
 }
 
 void Maze::init() {
-  if (SDL_Init(SDL_INIT_EVERYTHING) == 0) {
+  if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) == 0) {
+
+    if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) != 0 )
+    {
+        printf( "SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError() );
+    }
+
+    gKey = Mix_LoadMUS( "./src/audio/key.wav" );
+    if( gKey == NULL )
+    {
+        printf( "Failed to load key sound effect! SDL_mixer Error: %s\n", Mix_GetError() );
+    }
 
     int width = size * CELL_SIZE;
     int height = size * CELL_SIZE + 20;
@@ -152,6 +145,7 @@ void Maze::init() {
 
     isRunning = true;
   } else {
+    printf("Unable to initialize SDL: %s\n", SDL_GetError());
     isRunning = false;
   }
 }
@@ -201,6 +195,7 @@ bool keyFound(Key k, Posn p) {
 }
 
 bool guardCollide(Guard g, Posn p) {
+  //Mix_PlayMusic( gHurt, 1);
   return g.p.x == p.x && g.p.y == p.y;
 }
 
@@ -209,7 +204,7 @@ void Maze::updateKeys() {
     if (!keys[i].found && keyFound(keys[i], player)) {
       keys[i].found = true;
       remainingKeys--;
-      playSound(KEY_SOUND_PATH);
+      Mix_PlayMusic( gKey, 1);
     }
   }
 }
@@ -430,42 +425,8 @@ void Maze::render() {
   }
 }
 
-void Maze::playSound(const char * sound) {
-  static Uint32 wav_length; // length of our sample
-  static Uint8 *wav_buffer; // buffer containing our audio file
-  static SDL_AudioSpec wav_spec; // the specs of our piece of music
-  /* Load the WAV */
-  // the specs, length and buffer of our wav are filled
-  if( SDL_LoadWAV(sound, &wav_spec, &wav_buffer, &wav_length) == NULL) {
-    return;
-  }
-  // set the callback function
-  wav_spec.callback = my_audio_callback;
-  wav_spec.userdata = NULL;
-  // set our global static variables
-  audio_pos = wav_buffer; // copy sound buffer
-  audio_len = wav_length; // copy file length
-  
-  /* Open the audio device */
-  if ( SDL_OpenAudio(&wav_spec, NULL) < 0 ){
-    fprintf(stderr, "Couldn't open audio: %s\n", SDL_GetError());
-    exit(-1);
-  }
-  
-  /* Start playing */
-  SDL_PauseAudio(0);
-
-  // wait until we're don't playing
-  while ( audio_len > 0 ) {
-    SDL_Delay(100); 
-  }
-  
-  // shut everything down
-  SDL_CloseAudio();
-  SDL_FreeWAV(wav_buffer);
-}
-
 void Maze::clean() {
+  Mix_FreeMusic(gKey);
   SDL_DestroyWindow(maze);
   SDL_DestroyRenderer(renderer);
   SDL_Quit();
