@@ -5,6 +5,7 @@
 const int CELL_SIZE = 20;
 
 const int DEFAULT_MAZE_SIZE = 20;
+const int MED_MAZE_SIZE = 22;
 const int HARD_MAZE_SIZE = 25;
 
 const int KEY_COUNT = 3;

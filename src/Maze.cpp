@@ -52,7 +52,7 @@ Maze::Maze(int difficulty) {
       canShuffle = false;
       break;
     case 2:
-      newSize = DEFAULT_MAZE_SIZE;
+      newSize = MED_MAZE_SIZE;
       num_guards = 2;
       health = 4;
       canShuffle = true;
