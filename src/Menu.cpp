@@ -103,23 +103,42 @@ void Menu::render() {
 
     SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
 
-    SDL_Rect top = {180, 50, 30, 30};
+    SDL_Rect top = {180, 100, 30, 30};
     drawRect(choice == 0, top);
 
-    SDL_Rect middle1 = {165, 150, 30, 30};
+    SDL_Rect middle1 = {165, 200, 30, 30};
     drawRect(choice == 1, middle1);
 
-    SDL_Rect middle2 = {195, 150, 30, 30};
+    SDL_Rect middle2 = {195, 200, 30, 30};
     drawRect(choice == 1, middle2);
 
-    SDL_Rect rect = {150, 250, 30, 30};
+    SDL_Rect rect = {150, 300, 30, 30};
     drawRect(choice == 2, rect);
 
-    SDL_Rect rect2 = {180, 250, 30, 30};
+    SDL_Rect rect2 = {180, 300, 30, 30};
     drawRect(choice == 2, rect2);
 
-    SDL_Rect rect3 = {210, 250, 30, 30};
+    SDL_Rect rect3 = {210, 300, 30, 30};
     drawRect(choice == 2, rect3);
+
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    SDL_RenderDrawLine(renderer, 160, 35, 170, 35);
+    SDL_RenderDrawLine(renderer, 160, 55, 170, 55);
+    SDL_RenderDrawLine(renderer, 160, 45, 170, 45);
+    SDL_RenderDrawLine(renderer, 160, 35, 160, 45);
+    SDL_RenderDrawLine(renderer, 170, 45, 170, 55);
+
+    SDL_RenderDrawLine(renderer, 180, 35, 180, 55);
+
+    SDL_RenderDrawLine(renderer, 190, 35, 200, 35);
+    SDL_RenderDrawLine(renderer, 190, 55, 200, 55);
+    SDL_RenderDrawLine(renderer, 200, 35, 190, 55);
+
+    SDL_RenderDrawLine(renderer, 210, 35, 220, 35);
+    SDL_RenderDrawLine(renderer, 210, 55, 220, 55);
+    SDL_RenderDrawLine(renderer, 210, 45, 220, 45);
+    SDL_RenderDrawLine(renderer, 210, 35, 210, 45);
+    SDL_RenderDrawLine(renderer, 210, 45, 210, 55);
 
     SDL_RenderPresent(renderer);
   }

@@ -48,22 +48,26 @@ Maze::Maze(int difficulty) {
     case 1:
       newSize = DEFAULT_MAZE_SIZE;
       num_guards = 1;
-      health = 10;
+      health = 5;
+      canShuffle = false;
       break;
     case 2:
-      newSize = MEDIUM_MAZE_SIZE;
+      newSize = DEFAULT_MAZE_SIZE;
       num_guards = 2;
-      health = 10;
+      health = 4;
+      canShuffle = true;
       break;
     case 3:
       newSize = HARD_MAZE_SIZE;
       num_guards = 3;
-      health = 10;
+      health = 3;
+      canShuffle = true;
       break;
     default:
       newSize = DEFAULT_MAZE_SIZE;
       num_guards = 1;
-      health = 10;
+      health = 5;
+      canShuffle = false;
       break;
   }
 
@@ -99,25 +103,6 @@ void Maze::generateMaze(int sx, int sy) {
       generateMaze(nx, ny);
     }
   }
-
-  for (int i = 0; i < KEY_COUNT; i++) {
-    Posn p = Posn();
-    p.x = rand() % size;
-    p.y = rand() % size;
-    Key k = Key();
-    k.p = p;
-    k.found = false;
-    keys[i] = k;
-  }
-
-  for (int i = 0; i < num_guards; i++) {
-    Posn p = Posn();
-    p.x = rand() % size;
-    p.y = rand() % size;
-    Guard g = Guard();
-    g.p = p;
-    guards[i] = g;
-  }
 }
 
 void Maze::init() {
@@ -144,6 +129,25 @@ void Maze::init() {
     renderer = SDL_CreateRenderer(maze, -1, 0);
 
     generateMaze(0, 0);
+
+    for (int i = 0; i < KEY_COUNT; i++) {
+      Posn p = Posn();
+      p.x = rand() % size;
+      p.y = rand() % size;
+      Key k = Key();
+      k.p = p;
+      k.found = false;
+      keys[i] = k;
+    }
+
+    for (int i = 0; i < num_guards; i++) {
+      Posn p = Posn();
+      p.x = rand() % size;
+      p.y = rand() % size;
+      Guard g = Guard();
+      g.p = p;
+      guards[i] = g;
+    }
 
     isRunning = true;
   } else {
@@ -207,6 +211,14 @@ void Maze::updateKeys() {
       keys[i].found = true;
       remainingKeys--;
       Mix_PlayMusic( gKey, 1);
+
+      if (canShuffle) {
+        cells = new Cell*[size];
+        for(int i = 0; i < size; ++i) {
+          cells[i] = new Cell[size];
+        }
+        generateMaze(0, 0);
+      }
     }
   }
 }
@@ -398,11 +410,10 @@ void Maze::render() {
         SDL_RenderDrawLine(renderer, 10, bottomCell + 10, 15, bottomCell + 10);
         break;
       case 4:
-        SDL_RenderDrawLine(renderer, 10, bottomCell, 15, bottomCell);
+        SDL_RenderDrawLine(renderer, 10, bottomCell, 10, bottomCell + 5);
         SDL_RenderDrawLine(renderer, 15, bottomCell + 5, 15, bottomCell);
         SDL_RenderDrawLine(renderer, 10, bottomCell + 5, 15, bottomCell + 5);
-        SDL_RenderDrawLine(renderer, 10, bottomCell + 5, 10, bottomCell + 10);
-        SDL_RenderDrawLine(renderer, 10, bottomCell + 10, 15, bottomCell + 10);
+        SDL_RenderDrawLine(renderer, 15, bottomCell + 5, 15, bottomCell + 10);
         break;
       case 3:
         SDL_RenderDrawLine(renderer, 10, bottomCell, 15, bottomCell);
