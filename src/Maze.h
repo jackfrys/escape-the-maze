@@ -45,6 +45,7 @@ private:
   bool isWon;
   bool isLost;
   bool alternate;
+  bool canShuffle;
   int num_guards;
   int health;
 };
