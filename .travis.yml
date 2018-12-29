@@ -1,8 +1,9 @@
 language: cpp
-script: ./install_cxx && make && ./test
+script: make && ./test
 addons:
   apt:
     packages:
     - libsdl2-dev
     - libsdl2-image-dev
     - libsdl2-mixer-dev
+    - cxxtest

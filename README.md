@@ -19,12 +19,12 @@ $ ./main
 ```
 
 ## Tests
-Be sure the `CxxTest` library is installed. It can be easily installed by running the `install_cxx` script:
+Be sure the `CxxTest` library is installed. It can be easily installed via Homebrew on macOS:
 ```
-$ ./install_cxx
+$ brew install cxxtest
 ```
 
-Then compile the run the tests:
+Then compile and run the tests:
 ```
 $ make test
 $ ./test
